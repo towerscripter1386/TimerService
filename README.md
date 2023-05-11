@@ -25,7 +25,9 @@ Now let's get to a small documentation I wrote just to give you a better underst
 
 **Constructors** <br>
 Methods: <br>
+
    new - this function has 3 arguments (Start,End,Add). It creates a new Timer <br>
+   
    Arguments:<br>
       Start - a starting number to count from<br>
       End - an end number which will end counting on<br>
@@ -33,9 +35,11 @@ Methods: <br>
   
 **Timer**
 Proporties:<br>
+
 Time - Current time of the timer<br>
    Completed - RBXScriptSignal, fires when Timer done counting<br>
    Began - RBXScriptSignal, fires when Timer began counting<br>
+   
 Methods:<br>
    Start() - Starts Timer and fires Began event<br>
    Stop() - Resets Timer, does not fire Completed event<br>
