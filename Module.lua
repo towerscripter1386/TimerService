@@ -11,7 +11,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-]
+]]
 local CompletedEvent = Instance.new("BindableEvent")
 local BeganEvent = Instance.new("BindableEvent")
 
@@ -29,12 +29,14 @@ local module = {new = function(Start:number,End:number,Add:boolean)
 			if Add then
 				Timer.Time += DeltaTime
 				if Timer.Time > End then
+					Timer.Time = End
 					CompletedEvent:Fire()
 					Timer:Pause()
 				end
 			else
 				Timer.Time -= DeltaTime
 				if Timer.Time < End then
+					Timer.Time = End
 					CompletedEvent:Fire()
 					Timer:Pause()
 				end
