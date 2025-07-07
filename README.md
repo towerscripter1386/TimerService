@@ -1,46 +1,161 @@
-# TimerService
-This module provides a better control of the time than task.wait()/wait(). Just because you are able to control it
+# ⏱️ TimerService
 
-## Functions and constructors
+A lightweight and efficient countdown/count-up timer module for Roblox, written in Luau. It supports starting, pausing, resetting, and stopping timers with event-driven notifications.
 
-To make a new timer, you can use this part of the code :
-```lua
-TimerService = require(PathToModule)
-Timer = TimerService.new(Start,End,Add) -- Start and end are numbers, while Add determines whether it is going to add or subtract (true is add and false is subtract)
+---
+
+## 🚀 Features
+
+- Count **up** or **down** from a specified time
+- Event-driven: `Began`, `Paused`, `Ended` signals
+- Optimized and strict-typed using Luau
+- Clean lifecycle management with `Destroy`
+
+---
+
+## 📦 Installation
+
+Add `TimerService` as a ModuleScript in **ReplicatedStorage** or any preferred location in your Roblox game.
+
+```luau
+local TimerService = require(path.to.TimerService)
 ```
 
-Simple as that. Now let's check if it's really counting:
+---
 
-```lua
-TimerService = require(PathToModule)
-Timer = TimerService.new(0,5,true)
-  
-Timer:Start()
-Timer.Completed:Wait()
-print("I'm done counting!")
+## 🛠️ Usage
+
+### 🔹 Creating a Timer
+
+```luau
+local timer = TimerService.new(5, true) -- 5 seconds, counting up
 ```
 
-Those parts of the code should have explained how this module works. 
-Now let's get to the small documentation I wrote just to give you a better understanding
-  
-## Timer
+**Parameters:**
+- `End: number?` – Target time in seconds (default: 1)
+- `Add: boolean?` – If true, timer counts **up** to `End`. If false, counts **down** (default: true)
 
-### Constructors
+---
 
-- TimerService.new
-   
-### Arguments:
-- Start - a starting number to count from
-- End - an end number which will end counting on
-- Add - true or false statement where true stands for add and false for subtract
+### 🔹 Starting the Timer
 
-### Proporties:<br>
+```luau
+timer:Start()
+```
 
-- Time: Current time of the timer
-- Completed - RBXScriptSignal, fires when Timer done counting
-- Began - RBXScriptSignal, fires when Timer began counting
-   
-### Methods:
-- Start() - Starts Timer and fires Began event
-- Stop() - Resets Timer, does not fire Completed event
-- Pause() - Pauses Timer, does not fire Completed event
+---
+
+### 🔹 Pausing the Timer
+
+```lua
+timer:Pause()
+```
+
+---
+
+### 🔹 Stopping (Reset + Pause)
+
+```luau
+timer:Stop()
+```
+
+---
+
+### 🔹 Resetting Time
+
+```luau
+timer:Reset()
+```
+
+---
+
+### 🔹 Destroying the Timer
+
+```luau
+timer:Destroy()
+```
+
+---
+
+## 📡 Events
+
+Timers are event-driven and expose these signals:
+
+| Event   | Description                            |
+|---------|----------------------------------------|
+| `Began` | Fired when the timer starts            |
+| `Ended` | Fired when the timer completes         |
+| `Paused`| Fired when the timer is paused         |
+
+```luau
+timer.Began:Connect(function(startTime)
+	print("Timer began at:", startTime)
+end)
+
+timer.Ended:Connect(function()
+	print("Timer ended!")
+end)
+
+timer.Paused:Connect(function(currentTime)
+	print("Timer paused at:", currentTime)
+end)
+```
+
+---
+
+## 🔧 API
+
+### `TimerService.new(endTime: number?, add: boolean?) → Timer`
+Creates a new Timer instance.
+
+### `Timer:Start()`
+Starts the countdown/count-up.
+
+### `Timer:Pause()`
+Pauses the timer (retains state).
+
+### `Timer:Stop()`
+Stops and resets the timer.
+
+### `Timer:Reset()`
+Resets the timer to its initial state.
+
+### `Timer:Destroy()`
+Cleans up events and memory (use before discarding the timer).
+
+---
+
+## 🧱 Type Definitions
+
+```luau
+export type TimerMeta = {
+	read __index:TimerMeta;
+	
+	read new:typeof(Timer_new);
+	read Destroy:typeof(Timer_Destroy);
+	read Start:typeof(Timer_Start);
+	read Stop:typeof(Timer_Stop);
+	read Pause:typeof(Timer_Pause);
+	read Reset:typeof(Timer_Reset);
+}
+
+export type TimerObj = {
+	_add:boolean;
+	_time:number;
+	_end:number;
+	
+	_event:RBXScriptConnection?;
+	
+	_began:BindableEvent;
+	_ended:BindableEvent;
+	_paused:BindableEvent;
+	
+	Began:RBXScriptSignal;
+	Ended:RBXScriptSignal;
+	Paused:RBXScriptSignal;
+}
+```
+
+<hr>
+
+used chatgpt to generate the README, it should be accurate enough for you to understand it properly
